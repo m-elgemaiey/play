@@ -28,10 +28,12 @@ model.summary()
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=80, batch_size=128)
+model.fit(x_train, y_train, epochs=60, batch_size=128)
 
 score = model.evaluate(x_test, y_test)
 
 # print score
 for i in range(len(model.metrics_names)):
     print(model.metrics_names[i], score[i])
+
+model.save('./models/keras_mnist.h5')
