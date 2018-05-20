@@ -5,4 +5,4 @@ Play and learn machine and deep learning in python
 |Model|file|Training|Test|
 |-----|----|--------|----|
 |keras|`models/keras_mnist.h5`|0.9982|0.9848|
-|tf logistic regression|`tf_mnist_log_reg.py`||0.929|
+|tf logistic regression|`tf_mnist_log_reg.py`|0.9354|0.9262|

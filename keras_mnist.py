@@ -2,6 +2,8 @@ from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras.utils import to_categorical
+import time
+from keras.callbacks import TensorBoard
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
@@ -24,11 +26,9 @@ model.add(Dense(512, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(num_classes, activation='softmax'))
 
-model.summary()
-
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-model.fit(x_train, y_train, epochs=60, batch_size=128)
+tensorboard = TensorBoard(log_dir="logs/keras_" + time.strftime('%Y%m%d_%H%M%S'))
+model.fit(x_train, y_train, epochs=60, batch_size=128, callbacks=[tensorboard])
 
 score = model.evaluate(x_test, y_test)
 
