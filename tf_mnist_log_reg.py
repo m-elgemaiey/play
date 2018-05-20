@@ -16,12 +16,10 @@ y = tf.nn.softmax(tf.matmul(x, W) + b)
 
 y_ = tf.placeholder(tf.float32, [None, 10])
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
-loss_summary = tf.summary.scalar('Loss', cross_entropy)
 #train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
 train_step = tf.train.AdamOptimizer().minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-acc_summary = tf.summary.scalar('Accuracy', accuracy)
 
 summary_writer = tf.summary.FileWriter('logs/tf_logreg_' + time.strftime('%Y%m%d_%H%M%S'))
 
