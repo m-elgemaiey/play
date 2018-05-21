@@ -3,6 +3,7 @@ Play and learn machine and deep learning in python
 
 ## MNIST
 Training and test accuracy for different models:
+
 |Model|file|Training|Test|
 |-----|----|--------|----|
 |keras neural network|`keras_mnist.py`|0.9982|0.9848|
