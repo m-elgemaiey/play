@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.contrib import rnn
 import time
+import datetime
 
 #import mnist dataset
 from tensorflow.examples.tutorials.mnist import input_data
@@ -10,14 +11,14 @@ mnist=input_data.read_data_sets("MNIST_data/",one_hot=True)
 #unrolled through 28 time steps
 time_steps = 28
 #hidden LSTM units
-num_units = 128
+num_units = 64
 #rows of 28 pixels
 n_input = 28
 #mnist is meant to be classified in 10 classes(0-9).
 n_classes = 10
 #size of batch
 batch_size = 100
-epochs = 30
+epochs = 40
 batches_per_epoch = mnist.train.num_examples // batch_size
 
 
@@ -42,7 +43,7 @@ outputs,_=rnn.static_rnn(lstm_layer,input,dtype="float32")
 prediction = tf.matmul(outputs[-1], out_weights) + out_bias
 
 #loss_function
-loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
+loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=prediction,labels=y))
 #optimization
 opt = tf.train.AdamOptimizer().minimize(loss)
 
@@ -72,9 +73,14 @@ def run_epoch(batches_per_epoch, batch_src):
 with tf.Session() as sess:
     sess.run(init)
 
+    total_start_time = datetime.datetime.now()
+
     for i in range(epochs):
+        start_time = datetime.datetime.now()
         epoch_acc, epoch_loss = run_epoch(batches_per_epoch, mnist.train)
-        print("Epoch:", i+1,  "  Accuracy:", epoch_acc)
+        end_time = datetime.datetime.now()
+        epoch_time = end_time - start_time
+        print("Epoch:", i+1,  "  Accuracy:", epoch_acc, "Time", epoch_time)
         acc_summ = tf.Summary(value=[tf.Summary.Value(tag='acc', simple_value=epoch_acc)])
         loss_summ = tf.Summary(value=[tf.Summary.Value(tag='loss', simple_value=epoch_loss)])
         summary_writer.add_summary(loss_summ, i)
@@ -84,3 +90,7 @@ with tf.Session() as sess:
     batches_per_epoch = mnist.test.num_examples // batch_size
     epoch_acc, _ = run_epoch(batches_per_epoch, mnist.test)
     print('Testing accuracy:', epoch_acc)
+
+    total_end_time = datetime.datetime.now()
+    print("Total Time", total_end_time - total_start_time)
+
