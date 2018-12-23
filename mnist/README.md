@@ -1,7 +1,4 @@
-# play
-Play and learn machine and deep learning in python
-
-## MNIST
+# MNIST
 Training and test accuracy for different models:
 
 |Model|file|Training|Test|
