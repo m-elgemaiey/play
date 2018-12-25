@@ -12,7 +12,7 @@ model.add(LSTM(32, return_sequences=True, input_shape=sms_data.sms_shape))
 model.add(Flatten())
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(X_train, y_train, epochs=15)
+model.fit(X_train, y_train, epochs=20)
 score = model.evaluate(X_test, y_test)
 # print score
 print('Test score:')

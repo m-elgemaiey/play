@@ -30,9 +30,19 @@ def convert_sentences_to_vectors(sentences):
     print("Loading spacy model...")
     nlp = spacy.load('en_core_web_md')
     print("Loaded spacy model")
-    X = [get_sentence_vectors(nlp, sent, max_sms_length) for sent in sentences]
+    X = np.array([get_sentence_vectors(nlp, sent, max_sms_length) for sent in sentences])
     return X
 
+# read data from the csv file
+def get_sms_text_from_csv():
+    print('Read sms data from spam.csv ...')
+    csv = pd.read_csv('spam.csv', encoding='iso-8859-1')
+    messages = csv.loc[:, 'v2']
+    y = csv.loc[:, 'v1'].as_matrix()
+    y = np.where(y == 'spam', 1, 0)
+
+    return messages, y
+    
 # get training and test data
 def get_sms_data():
     data_file_name = 'preprocessed.npz'
@@ -40,15 +50,10 @@ def get_sms_data():
         npzfile = np.load(data_file_name)
         return npzfile['xtrain'], npzfile['xtest'], npzfile['ytrain'], npzfile['ytest']
     else:
-        # read data
-        print('Read sms data from spam.csv ...')
-        csv = pd.read_csv('spam.csv', encoding='iso-8859-1')
-        X = csv.loc[:, 'v2']
-        X = convert_sentences_to_vectors(X)
-        y = csv.loc[:, 'v1'].as_matrix()
-        y = np.where(y == 'spam', 1, 0)
+        messages, y = get_sms_text_from_csv()
+        X = convert_sentences_to_vectors(messages)
         # split
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
         print('Save training data to preprocessed.npz ...')
         np.savez(data_file_name, xtrain=X_train, xtest=X_test, ytrain=y_train, ytest=y_test)
         return X_train, X_test, y_train, y_test
