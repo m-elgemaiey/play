@@ -24,15 +24,14 @@ padded_docs = pad_sequences(encoded_docs, maxlen=sms_data.max_sms_length, paddin
 # define the model
 model = Sequential()
 model.add(Embedding(vocab_size, 25, input_length=sms_data.max_sms_length))
-model.add(LSTM(32, return_sequences=True))
-model.add(Flatten())
+model.add(LSTM(32, return_sequences=False))
 model.add(Dense(1, activation='sigmoid'))
 # compile the model
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 # summarize the model
 print(model.summary())
 # fit the model
-model.fit(padded_docs, y_train, epochs=25)
+model.fit(padded_docs, y_train, epochs=20)
 encoded_docs = tokenizer.texts_to_sequences(X_test)
 padded_docs = pad_sequences(encoded_docs, maxlen=sms_data.max_sms_length, padding='post')
 # evaluate
