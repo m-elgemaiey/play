@@ -8,7 +8,7 @@ import sms_data
 X_train, X_test, y_train, y_test = sms_data.get_sms_data()
 
 model = Sequential()
-model.add(LSTM(32, return_sequences=False, input_shape=sms_data.sms_shape))
+model.add(LSTM(32, return_sequences=False, input_shape=sms_data.sms_glove_shape))
 model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 model.fit(X_train, y_train, epochs=20)

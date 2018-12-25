@@ -1,4 +1,3 @@
-from keras.preprocessing.text import one_hot
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.models import Sequential
@@ -10,20 +9,11 @@ from pandas_ml import ConfusionMatrix
 import numpy as np
 import sms_data
 
-messages, y = sms_data.get_sms_text_from_csv()
-X_train, X_test, y_train, y_test = train_test_split(messages, y, test_size=0.2, shuffle=False)
-
-tokenizer = Tokenizer()
-tokenizer.fit_on_texts(X_train)
-vocab_size = len(tokenizer.word_index) + 1
-# integer encode the documents
-encoded_docs = tokenizer.texts_to_sequences(X_train)
-# pad documents to a max length of 4 words
-padded_docs = pad_sequences(encoded_docs, maxlen=sms_data.max_sms_length, padding='post')
-
+# get data
+X_train, X_test, y_train, y_test, vocab_size = sms_data.get_sms_embedding_data()
 # define the model
 model = Sequential()
-model.add(Embedding(vocab_size, 25, input_length=sms_data.max_sms_length))
+model.add(Embedding(vocab_size, sms_data.embedding_vector_size, input_length=sms_data.max_sms_length))
 model.add(LSTM(32, return_sequences=False))
 model.add(Dense(1, activation='sigmoid'))
 # compile the model
@@ -31,18 +21,16 @@ model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy']
 # summarize the model
 print(model.summary())
 # fit the model
-model.fit(padded_docs, y_train, epochs=20)
-encoded_docs = tokenizer.texts_to_sequences(X_test)
-padded_docs = pad_sequences(encoded_docs, maxlen=sms_data.max_sms_length, padding='post')
+model.fit(X_train, y_train, epochs=20)
 # evaluate
-score = model.evaluate(padded_docs, y_test)
+score = model.evaluate(X_test, y_test)
 # print score
 print('Test score:')
 for i in range(len(model.metrics_names)):
     print(model.metrics_names[i], score[i])
 
 # confusion matrix
-y_pred = model.predict(padded_docs)
+y_pred = model.predict(X_test)
 y_pred = np.where(y_pred > 0.5, 1, 0)
 y_test = y_test.reshape(y_test.shape[0])
 y_pred = y_pred.reshape(y_pred.shape[0])

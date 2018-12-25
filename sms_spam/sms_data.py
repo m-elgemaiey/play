@@ -3,10 +3,14 @@ import spacy
 import os.path as path
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+
 
 max_sms_length = 30 # max number of words in sms
-word_vec_size = 300 # spacy word vector size
-sms_shape = (max_sms_length, word_vec_size)
+glove_word_vec_size = 300 # spacy word vector size
+sms_glove_shape = (max_sms_length, glove_word_vec_size)
+embedding_vector_size = 25 # Embedding vector size
 
 # get sentence word vectors 
 def get_sentence_vectors(nlp, sentence, max_size):
@@ -57,3 +61,21 @@ def get_sms_data():
         print('Save training data to preprocessed.npz ...')
         np.savez(data_file_name, xtrain=X_train, xtest=X_test, ytrain=y_train, ytest=y_test)
         return X_train, X_test, y_train, y_test
+
+def get_sms_embedding_data():
+    messages, y = get_sms_text_from_csv()
+    X_train, X_test, y_train, y_test = train_test_split(messages, y, test_size=0.2, shuffle=False)
+
+    tokenizer = Tokenizer()
+    tokenizer.fit_on_texts(X_train)
+    vocab_size = len(tokenizer.word_index) + 1
+    # integer encode the documents
+    X_train = tokenizer.texts_to_sequences(X_train)
+    X_test = tokenizer.texts_to_sequences(X_test)
+    # pad documents to a max length of 4 words
+    X_train = pad_sequences(X_train, maxlen=max_sms_length, padding='post')
+    X_test = pad_sequences(X_test, maxlen=max_sms_length, padding='post')
+
+    vocab_size = len(tokenizer.word_index) + 1
+
+    return X_train, X_test, y_train, y_test, vocab_size

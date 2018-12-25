@@ -12,3 +12,9 @@ Instead of using spacy for tokenization and word vectors, I used keras Tokenizer
 
 Test Accuracy: 0.9856  
 F1-score: 0.9432
+
+## 3. Combined: GloVe + Embedding
+Concatenate the models in 1 and 2
+
+Test Accuracy: 0.9865   
+F1-score: 0.9466
