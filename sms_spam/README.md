@@ -18,3 +18,9 @@ Concatenate the models in 1 and 2
 
 Test Accuracy: 0.9865   
 F1-score: 0.9466
+
+## 4. Convolution model
+Using GloVe vectors and Conv1D layers
+
+Test Accuracy: 0.9847   
+F1-score: 0.9463
