@@ -2,6 +2,7 @@ import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, BatchNormalization, Activation
 from keras.utils import to_categorical
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 import numpy as np
 from callback import EarlyStoppingByAccuracy, EarlyStoppingByLoss
 
@@ -33,15 +34,18 @@ model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2), strides=2))
 model.add(Flatten())
-model.add(Dense(512, ))
+model.add(Dense(512, activation='relu'))
 model.add(Dropout(0.2))
-model.add(Dense(512, ))
+model.add(Dense(512, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(num_classes, activation='softmax'))
 
 model.summary()
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-model.fit(X, y, epochs=100, batch_size=128, callbacks=[EarlyStoppingByAccuracy(0.99999)])
+lr_cb = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5)
+es_cb = EarlyStopping(monitor='acc', patience=10)
+es_acc = EarlyStoppingByAccuracy(0.999992)
+model.fit(X, y, epochs=100, batch_size=128, callbacks=[lr_cb, es_cb, es_acc])
 #model.fit(X, y, epochs=160, batch_size=128, callbacks=[EarlyStoppingByLoss(1.0e-7)])
 
 # load test data
