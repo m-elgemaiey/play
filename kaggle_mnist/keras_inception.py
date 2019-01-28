@@ -43,7 +43,7 @@ model.summary()
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 lr_cb = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5, verbose=1)
-es_cb = EarlyStopping(monitor='acc', patience=10, baseline=0.99999, restore_best_weights=True, verbose=1)
+es_cb = EarlyStopping(monitor='acc', patience=10, restore_best_weights=True, verbose=1)
 model.fit(X, y, epochs=100, batch_size=128, callbacks=[lr_cb, es_cb])
 
 # load test data
