@@ -2,9 +2,8 @@ import pandas as pd
 from keras.models import Model
 from keras.layers import Input, Dense, Dropout, Conv2D, MaxPooling2D, Flatten, BatchNormalization, Activation
 from keras.utils import to_categorical
-from keras.callbacks import ReduceLROnPlateau
+from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 import numpy as np
-from callback import EarlyStoppingByAccuracy, EarlyStoppingByLoss
 
 # input
 print('Reading MNIST data from train.csv ...')
@@ -43,9 +42,9 @@ model = Model(inputs=input, outputs=layer)
 model.summary()
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-lr_cb = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5)
-model.fit(X, y, epochs=100, batch_size=128, callbacks=[lr_cb, EarlyStoppingByAccuracy(0.99999)])
-#model.fit(X, y, epochs=160, batch_size=128, callbacks=[EarlyStoppingByLoss(1.0e-7)])
+lr_cb = ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5, verbose=1)
+es_cb = EarlyStopping(monitor='acc', patience=10, baseline=0.99999, restore_best_weights=True, verbose=1)
+model.fit(X, y, epochs=100, batch_size=128, callbacks=[lr_cb, es_cb])
 
 # load test data
 print('Reading MNIST data from test.csv ...')
