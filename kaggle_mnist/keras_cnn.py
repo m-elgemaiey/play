@@ -50,7 +50,7 @@ datagen = ImageDataGenerator(
     width_shift_range=0.1, 
     height_shift_range=0.1,
     zoom_range=0.1,
-    shear_range=0.3) 
+    shear_range=0.1) 
 model.fit_generator(datagen.flow(X, y, batch_size=128), epochs=100, steps_per_epoch=X.shape[0] // 128, callbacks=[lr_cb, es_cb])
 # load test data
 print('Reading MNIST data from test.csv ...')

@@ -14,7 +14,8 @@ https://www.kaggle.com/c/digit-recognizer
 | 6 | 0.99071 | same as 5 but stopped at loss = `1.1921e-07`, used 160 epochs, reached the same loss a lot earlier. Didn't improve test accuracy.|
 | 9 | 0.99471 | 64 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 128 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 256 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 512 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> Dense (512) --> Dropout(0.2) --> Dense (512) --> Dropout(0.2) --> softmax|
 | 10 | 0.99371 | Inspired by the Inception model, see [keras_inception.py](keras_incpetion.py) | 
-| 11 | <b>0.99600</b> | Same as 9 but used ImageDataGenerator to add generated images |
+| 11 | 0.99600 | Same as 9 but used ImageDataGenerator to add generated images |
+| 12 | <b>0.99614</b> | Same as 11 but shear set to 0.1 |
 
 ## Notes:
 1. When increased the number of epochs with no dropout from 60 to 160 the model achieved a higher accuracy (lower loss) but failed to improve the test accuracy
