@@ -15,8 +15,10 @@ https://www.kaggle.com/c/digit-recognizer
 | 9 | 0.99471 | 64 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 128 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 256 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> 512 filters  (5, 5) --> batch normalization --> relu --> max pooling (2, 2) --> Dense (512) --> Dropout(0.2) --> Dense (512) --> Dropout(0.2) --> softmax|
 | 10 | 0.99371 | Inspired by the Inception model, see [keras_inception.py](keras_incpetion.py) | 
 | 11 | 0.99600 | Same as 9 but used ImageDataGenerator to add generated images |
-| 12 | <b>0.99614</b> | Same as 11 but shear set to 0.1 |
+| 12 | 0.99614 | Same as 11 but shear set to 0.1 |
+| 13 | <b>0.99685</b> | Same as 12 but added Dropout after every max MaxPooling layer |
 
 ## Notes:
-1. When increased the number of epochs with no dropout from 60 to 160 the model achieved a higher accuracy (lower loss) but failed to improve the test accuracy
+1. When increased the number of epochs with no dropout from 60 to 160 the model achieved a higher accuracy (lower loss) but failed to improve the test accuracy.
+2. When I used rmsprop instead of adam it didn't improve model accuracy.
 
