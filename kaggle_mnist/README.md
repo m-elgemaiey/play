@@ -17,6 +17,8 @@ https://www.kaggle.com/c/digit-recognizer
 | 11 | 0.99600 | Same as 9 but used ImageDataGenerator to add generated images |
 | 12 | 0.99614 | Same as 11 but shear set to 0.1 |
 | 13 | <b>0.99685</b> | Same as 12 but added Dropout after every max MaxPooling layer |
+| 14 | 0.99685 | Doubled the number of filters in every Conv2D layers |
+| 15 | 0.99642 | Double the number of Conv2D layers |
 
 ## Notes:
 1. When increased the number of epochs with no dropout from 60 to 160 the model achieved a higher accuracy (lower loss) but failed to improve the test accuracy.
