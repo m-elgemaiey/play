@@ -19,7 +19,8 @@ https://www.kaggle.com/c/digit-recognizer
 | 13 | <b>0.99685</b> | Same as 12 but added Dropout after every max MaxPooling layer |
 | 14 | 0.99685 | Doubled the number of filters in every Conv2D layers |
 | 15 | 0.99642 | Double the number of Conv2D layers |
-| 16 | 0.99657 | Multi Column Convultion network [keras_mc_cnn.py](keras_mc_cnn.py)| 
+| 16 | 0.99657 | Multi Column Convultion network [keras_mc_cnn.py](keras_mc_cnn.py) | 
+| 17 | 0.99685 | Same as 13 but tried the following:<br>- Increate image generation props to 0.15<br>- Adjust the early stopping and lr adjustment to take longer |
 
 ## Notes:
 1. When increased the number of epochs with no dropout from 60 to 160 the model achieved a higher accuracy (lower loss) but failed to improve the test accuracy.
