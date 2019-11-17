@@ -36,8 +36,8 @@ x_train = pad_sequences(x_train, max_length, padding='post', truncating='post', 
 x_test = pad_sequences(x_test, max_length, padding='post', truncating='post', value=0)
 
 model = Sequential(layers=[
-    Embedding(len(index_to_word), 128, input_length=max_length),
-    LSTM(128, return_sequences=True),
+    Embedding(len(index_to_word), 64, input_length=max_length),
+    LSTM(32, return_sequences=True),
     Flatten(),
     Dense(64, activation='relu'),
     Dropout(0.2),
